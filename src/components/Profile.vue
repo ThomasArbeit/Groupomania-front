@@ -44,7 +44,7 @@ export default {
 
 <style lang="scss">
     .profile{
-        width: 80%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;

@@ -73,6 +73,19 @@ export default {
                 })
                 .then(res => {
                     console.log(res);
+                    axios.post('http://localhost:3000/api/login',{
+                    email: this.email,
+                    password: this.password
+                    },
+                    {
+                        headers:{ 'Content-type': 'application/json'}
+                    })
+                    .then(res => {
+                        sessionStorage.setItem('usertoken', res.data.token);
+                        sessionStorage.setItem('userId', parseInt(res.data.userId));
+                        window.location.href="/#/Home";
+                    })
+                    .catch(error => console.log({error}));
                 })
                 .catch(error => console.log({error}));
             }

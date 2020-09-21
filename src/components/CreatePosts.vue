@@ -6,11 +6,12 @@
                 <label for="title" class="createPost__formlabel">Titre de votre post</label>
                 <input type="text" name="title" id="title" value="" v-model="content" class="createPost__forminput" placeholder="Ecrivez votre titre ici">
             </div>
-            <div class="createPost__formbox">
-                <label for="file" class="createPost__formlabel createPost__formlabel--file">Choix de l'image / GIF</label>
-                <input type="file" name="image" id="file" @change="onFileSelected"  hidden>
+            <div class="createPost__formbox--small">
+                <label for="file" class="createPost__formlabel createPost__formlabel--file"><font-awesome-icon icon="images" /></label>
+                <input type="file" name="image" id="file" @change="onFileSelected" hidden>
+                <button type="submit" class="createPost__formsubmit"><font-awesome-icon icon="paper-plane" /></button>
             </div>
-            <button type="submit" class="createPost__formsubmit">Créer</button>
+            
         </form>
     </div>
 </template>
@@ -44,6 +45,11 @@ export default {
                     'Authorization': `Bearer ${token}`
                 }
             })
+            .then(res => {
+                console.log(res);
+                window.location.reload();
+            })
+            .catch(error => console.log(error));
         }
     }
 }
@@ -52,8 +58,12 @@ export default {
 <style lang="scss">
     .createPost {
         margin: auto;
-        margin-top: 100px;
-        width: 80%;
+        margin-top: 154px;
+        width: 100%;
+
+        &__form{
+            display: flex;
+        }
 
         &__title{
             font-size: 26px;
@@ -63,6 +73,14 @@ export default {
         &__formbox{
             display: flex;
             flex-direction: column;
+            flex: 4;
+
+            &--small{
+                display: flex;
+                flex: 1;
+                justify-content: space-around;
+                align-items: flex-end;
+            }
         }
 
         &__formlabel{
@@ -74,29 +92,33 @@ export default {
             &--file{
                 text-decoration: underline;
                 cursor: pointer;
+                margin-bottom: 0;
+                text-align: center;
+                padding: 15px;
+                border: 1px solid #545454;
+                border-radius: 10px;
+                font-size: 20px;
             }
         }
 
         &__forminput{
             display: block;
-            width: 100%;
+            width: 95%;
             height: 56px;
             border-radius: 10px;
             border: 1px solid #545454;
-            margin-bottom: 30px;
             padding-left: 21px;
             font-size: 20px;
             color: #AFAFAF;
         }
 
         &__formsubmit{
-            width: 45%;
+            width: 56px;
             height: 56px;
             background-color: #004367;
             color: white;
             border: none;
             border-radius: 10px;
-            margin-top: 18px; 
             cursor: pointer;
             font-size: 20px;
         }

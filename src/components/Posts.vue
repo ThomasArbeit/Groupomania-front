@@ -2,35 +2,66 @@
     <div class="posts">
         <h1 class="posts__title"> Les Posts </h1>
         <div class="post" id="post" v-for="post in posts" :key="post.postId">
+            
             <div class="post__title">
                 <p class="post__user">{{ post.user_Id.firstName }}  {{ post.user_Id.lastName }}</p>
                 <p class="post__desc">{{ post.content }}</p>
-                <p class="post__date">{{ post.createdAt }}</p>
+                <p class="post__date">{{ post.postId }}</p>
+                <button class="post__delete" v-if="post.creator_Id == userId || userRole == 1" v-on:click="deletePost(post.postId)">
+                    Supprimer 
+                    <font-awesome-icon icon="trash" />
+                </button>
             </div>
-
-            <div class="post__image">
-                <img :src="post.imageUrl" alt="" class="post__img">
-            </div>
+            <router-link :to="{name:'Post', params: {id : post.postId}}" class="post__link">
+                <div class="post__image">
+                    <img :src="post.imageUrl" alt="" class="post__img">
+                </div>
+            </router-link>
             <div class="post__commsAndLike">
                 <router-link :to="{name:'Post', params: {id : post.postId}}" class="post__link">{{ post.Comments }} commentaires</router-link>
                 <a href="#" class="post__link">{{ post.Likes }} likes</a>
             </div>
+            
         </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import VueJwtDecode from 'vue-jwt-decode'
 export default {
     name: 'Posts',
     data(){
         return {
             posts: "",
+            userRole: "",
+            userId: sessionStorage.getItem('userId')
+        }
+    },
+    methods:{
+        deletePost(id){
+            const postId = id;
+            const token = sessionStorage.getItem('usertoken');
+            const header = {
+                headers :{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            axios.delete('http://localhost:3000/api/posts/' + postId, header )
+            .then(res => {
+                console.log(res);
+                window.location.reload();
+                })
+            .catch(error => console.log(error));
         }
     },
     mounted() {
+            const decodedToken = VueJwtDecode.decode(sessionStorage.getItem('usertoken'));
+            const UserRole = decodedToken.role;
+            this.userRole = UserRole;
             const token = sessionStorage.getItem('usertoken');
-            axios.get('http://localhost:3000/api/posts', 
+            axios.get('http://localhost:3000/api/posts/', 
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,7 +72,6 @@ export default {
                 const data = res.data;
                 console.log(data);
                 this.posts = data;
-
             })
             .catch(error => console.log({error}));
             
@@ -51,27 +81,29 @@ export default {
 </script>
 
 <style lang="scss">
-
     .posts{
-        width: 80%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         margin: auto;
-
         &__title{
-            margin: 154px 0 34px;;
+            margin: 20px 0 34px;
             font-size: 26px;
             font-weight: 700;
         }
     }
 
     .post{
+        &:hover{
+            box-shadow: 0px 0px 30px hsla(0, 0%, 0%, 0.26);
+        }
         margin-bottom: 30px;
         background-color: white;
 
         border-radius: 10px;
         box-shadow: 0px 0px 10px hsla(0, 0%, 0%, 0.26);
+        transition: box-shadow ease-in-out 200ms;
 
         &__title{
             font-size: 15px;
@@ -94,6 +126,21 @@ export default {
             color: #9A9A9A;
             font-weight: 300;
         }
+        &__delete{
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            z-index: 2;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 30px;
+            color: white;
+            background-color: #FD2D01;
+            cursor: pointer;
+            &:hover{
+                box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.199);
+            }
+        }
         &__image{
             width: 100%;
         }
@@ -102,6 +149,9 @@ export default {
             position: relative;
             z-index: 0;
             
+        }
+        &__link{
+            text-decoration: none;
         }
         &__commsAndLike{
             margin-bottom: 20px;

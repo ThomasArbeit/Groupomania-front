@@ -45,6 +45,7 @@ export default {
             .then(res => {
                 console.log(res);
                 this.comment = "";
+                window.location.reload();
             })
             .catch(error => console.log({error}));
         }

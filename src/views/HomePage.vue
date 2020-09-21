@@ -23,7 +23,16 @@ export default {
         NavBar,
         Posts,
         CreatePosts,
+    },
+    beforeMount(){
+    console.log("Avant l'affichage");
+    const token = sessionStorage.getItem('usertoken');
+    const pageurl = window.location.href;
+    const url = pageurl.split('#')[1];
+    if((url != "/Login" && url != "/Signup") && (token == null)){
+      window.location = "http://localhost:8080/#/Login";
     }
+  },
 }
 </script>
 
@@ -31,24 +40,32 @@ export default {
 
     .home{
         display:flex;
+        flex-direction: column;
     }
 
     .leftBar{
         position: fixed;
         order:1;
+        z-index: 2;
         background-color: #004367;
-        height:100vh;
-        width:25%;
+        height: 80px;
+        width:100%;
+        padding: 20px;
     }
 
     .middleBar{
-        order:2;
-        width:50%;
-        margin-left: 25%;
+        order:3;
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
     }
 
     .rightBar{
-        order:3;
-        width:25%;
+        order:2;
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
     }
 </style>

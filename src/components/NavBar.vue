@@ -1,8 +1,12 @@
 <template>
     <nav class="navigation">
         <img class="navigation__logo" src="../assets/white-logo.png" alt="logo Groupomania blanc">
-        <router-link class="navigation__link" to="/Home">Accueil</router-link>
-        <router-link class="navigation__link" to="/Profile">Mon Profil</router-link>
+        <div class="navigation__links">
+            <router-link class="navigation__link" to="/Home">Accueil</router-link>
+            <router-link class="navigation__link" to="/Profile">Mon Profil</router-link>
+            <p class="navigation__link" to="/Login" v-on:click="Logout()">Déconnexion</p>
+        </div>
+        
     </nav>
 </template>
 
@@ -13,6 +17,13 @@ export default {
         return {
             userId: sessionStorage.getItem('userId')
         }
+    },
+    methods:{
+        Logout(){
+            console.log("Sessionstorage Cleared");
+            sessionStorage.clear();
+            this.$router.push('/Login');
+        }
     }
 }
 </script>
@@ -20,23 +31,22 @@ export default {
 <style lang="scss">
     .navigation{
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
+        max-width: 800px;
         height: 100%;
+        margin: auto;
 
         position: relative;
 
-        &__logo{
-            position: absolute;
-            top: 144px;
-        }
 
         &__link{
+            display: inline-block;
             text-decoration: none;
             color: white;
-            font-size: 20px;
-            margin-bottom: 20px;
+            font-size: 15px;
+            margin:0px 10px 0px;
 
             &:active{
                 opacity: 0.7;

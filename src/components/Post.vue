@@ -34,7 +34,7 @@ export default {
             post: "",
         }
     },
-    mounted() {
+    beforeMount() {
             const hashUrl = window.location.hash;
             const post_Id = hashUrl.split('/')[2];
             console.log(post_Id)
@@ -61,19 +61,6 @@ export default {
 
 <style lang="scss">
 
-    .posts{
-        width: 80%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: auto;
-
-        &__title{
-            margin: 154px 0 34px;;
-            font-size: 26px;
-            font-weight: 700;
-        }
-    }
 
     .post{
         margin-bottom: 30px;

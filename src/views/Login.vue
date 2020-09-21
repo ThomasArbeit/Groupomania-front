@@ -56,7 +56,9 @@ export default {
                 .then(res => {
                     sessionStorage.setItem('usertoken', res.data.token);
                     sessionStorage.setItem('userId', parseInt(res.data.userId));
-                    window.location.href="/#/Home";
+                    window.isSignedIn=true;
+                    this.$router.push('/Home');
+                    console.log(window.isSignedIn);
                     
                 })
                 .catch(error => console.log({error}));
