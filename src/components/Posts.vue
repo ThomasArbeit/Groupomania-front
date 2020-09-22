@@ -4,7 +4,7 @@
         <div class="post" id="post" v-for="post in posts" :key="post.postId">
             
             <div class="post__title">
-                <p class="post__user">{{ post.user_Id.firstName }}  {{ post.user_Id.lastName }}</p>
+                <p class="post__user">{{ post.User.firstName }}  {{ post.User.lastName }}</p>
                 <p class="post__desc">{{ post.content }}</p>
                 <p class="post__date">{{ post.postId }}</p>
                 <button class="post__delete" v-if="post.creator_Id == userId || userRole == 1" v-on:click="deletePost(post.postId)">
@@ -17,9 +17,8 @@
                     <img :src="post.imageUrl" alt="" class="post__img">
                 </div>
             </router-link>
-            <div class="post__commsAndLike">
-                <router-link :to="{name:'Post', params: {id : post.postId}}" class="post__link">{{ post.Comments }} commentaires</router-link>
-                <a href="#" class="post__link">{{ post.Likes }} likes</a>
+            <div class="post__commsAndLike" >
+                <p href="#" class="post__link">{{ post.likes }} likes</p>
             </div>
             
         </div>
@@ -34,8 +33,11 @@ export default {
     data(){
         return {
             posts: "",
+            likes:"",
             userRole: "",
-            userId: sessionStorage.getItem('userId')
+            userId: sessionStorage.getItem('userId'),
+            liked: '',
+            token: sessionStorage.getItem('usertoken')
         }
     },
     methods:{
@@ -61,20 +63,19 @@ export default {
             const UserRole = decodedToken.role;
             this.userRole = UserRole;
             const token = sessionStorage.getItem('usertoken');
-            axios.get('http://localhost:3000/api/posts/', 
-            {
+            const header = {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 }
-            })
+            }
+            axios.get('http://localhost:3000/api/posts/', header)
             .then(res => {
                 const data = res.data;
                 console.log(data);
                 this.posts = data;
             })
             .catch(error => console.log({error}));
-            
         }
     }
 
@@ -156,6 +157,8 @@ export default {
         &__commsAndLike{
             margin-bottom: 20px;
             padding: 10px;
+            position: relative;
         }
+        
     }
 </style>

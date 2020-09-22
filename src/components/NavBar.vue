@@ -47,6 +47,7 @@ export default {
             color: white;
             font-size: 15px;
             margin:0px 10px 0px;
+            cursor: pointer;
 
             &:active{
                 opacity: 0.7;

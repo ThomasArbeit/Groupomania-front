@@ -3,7 +3,7 @@
         <h1 class="posts__title"> Un seul Post </h1>
         <div class="post" id="post" v-for="post in post" :key="post.postId">
             <div class="post__title">
-                <p class="post__user">{{ post.user_Id.firstName }}  {{ post.user_Id.lastName }}</p>
+                <p class="post__user">{{ post.User.firstName }}  {{ post.User.lastName }}</p>
                 <p class="post__desc">{{ post.content }}</p>
                 <p class="post__date">{{ post.createdAt }}</p>
             </div>
@@ -12,6 +12,8 @@
                 <img :src="post.imageUrl" alt="" class="post__img">
             </div>
             <div class="post__commsAndLike">
+                <p>{{ post.likes }} Likes</p>
+                <Likes/>
             </div>
             <CreateComment/>
             <Comments/>
@@ -23,11 +25,13 @@
 import axios from 'axios'
 import CreateComment from './CreateComment'
 import Comments from './Comments'
+import Likes from './Likes'
 export default {
     name: 'Post',
     components:{
         CreateComment,
-        Comments
+        Comments,
+        Likes
     },
     data(){
         return {
@@ -37,7 +41,6 @@ export default {
     beforeMount() {
             const hashUrl = window.location.hash;
             const post_Id = hashUrl.split('/')[2];
-            console.log(post_Id)
             const token = sessionStorage.getItem('usertoken');
             axios.get('http://localhost:3000/api/posts/' + post_Id, 
             {
@@ -48,7 +51,6 @@ export default {
             })
             .then(res => {
                 const data = res.data;
-                console.log(data);
                 this.post = data;
 
             })
