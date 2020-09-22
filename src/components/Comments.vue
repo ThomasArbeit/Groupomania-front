@@ -3,7 +3,7 @@
         <h2 class="commentaires__title"> Les Commentaires </h2>
         <div class="comments" id="comment" v-for='comment in comments' :key='comment.commentId'>
             <div class="comments__title">
-                <p class="comments__user">{{ comment.commentor_Id.firstName }}  {{ comment.commentor_Id.lastName }}</p>
+                <p class="comments__user">{{ comment.User.firstName }}  {{ comment.User.lastName }}</p>
                 <p class="comments__date">{{ comment.createdAt }}</p>
                 <button class="comments__delete" v-if="comment.commentor_Id == userId || userRole == 1" v-on:click="deleteComment(comment.commentId)">
                     Supprimer 
