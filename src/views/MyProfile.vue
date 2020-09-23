@@ -5,6 +5,8 @@
         </div>
         <div class="middleBar">
             <Profile/>
+            <ModaleProfile v-bind:revele="revele" v-bind:toggleModale="toggleModale" />
+            <button v-on:click='toggleModale'  class="home__button">Modifier mes informations</button>
         </div>
         <div class="rightBar">
         </div>
@@ -14,12 +16,24 @@
 <script>
 import NavBar from '../components/NavBar.vue'
 import Profile from '../components/Profile.vue'
+import ModaleProfile from '../components/ModaleProfile'
 
 export default {
     name: 'Home',
+    data(){
+        return{
+            revele: false
+        }
+    },
     components:{
         NavBar,
-        Profile
+        Profile,
+        ModaleProfile
+    },
+    methods:{
+        toggleModale(){
+            this.revele = !this.revele;
+        }
     },
     beforeMount(){
     console.log("Avant l'affichage");
@@ -34,5 +48,14 @@ export default {
 </script>
 
 <style lang="scss">
+    .home__button{
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: none;
+        color: white;
+        background-color:#004367;
+        margin-top: 25px;
 
+        cursor: pointer;
+    }
 </style>
