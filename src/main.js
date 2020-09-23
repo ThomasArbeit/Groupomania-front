@@ -4,10 +4,13 @@ import router from './router'
 
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faImages, faTrash, faPaperPlane, faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faImages, faTrash, faPaperPlane, faHeart, faPen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faTrash, faImages, faPaperPlane, faHeart)
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
+
+library.add(faTrash, faImages, faPaperPlane, faHeart, faPen)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false

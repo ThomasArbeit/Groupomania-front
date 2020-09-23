@@ -2,31 +2,37 @@
     <main>
         <div class="left">
             <div class="form">
-                <form method="POST" class="form__form" v-on:submit.prevent="signup()">
+                <form method="POST" class="form__form" v-on:submit.prevent="submitForm()">
                     <img src="../assets/black_logo.png" alt="Groupomania logo" class="form__logo">
                     <h1 class="form__title">Bonjour, bienvenue parmi nous !</h1>
 
                     <div class="form__box">
                         <label for="firstName" class="form__label">Votre nom</label>
-                        <input type="text" name="firstName" id="firstName" value="" class="form__input" placeholder="mon-mot-de-passe" v-model="firstName">
+                        <input type="text" name="firstName" id="firstName"  class="form__input" placeholder="mon-mot-de-passe" v-model="firstName">
+                        <span class="form__error" v-if="(!$v.firstName.required && $v.firstName.$dirty) && submited">Veuillez ajouter votre nom</span>
+                        <span class="form__error" v-if="!$v.firstName.alpha && $v.firstName.$dirty">Veuillez ajouter un nom valide</span>
                     </div>
 
                     <div class="form__box">
                         <label for="lastName" class="form__label">Votre prénom</label>
-                        <input type="text" name="lastName" id="lastName" value="" class="form__input" placeholder="mon-mot-de-passe" v-model="lastName">
+                        <input type="text" name="lastName" id="lastName"  class="form__input" placeholder="mon-mot-de-passe" v-model="lastName">
+                        <span class="form__error" v-if="(!$v.lastName.required && $v.lastName.$dirty) && submited" >Veuillez ajouter votre prénom</span>
+                        <span class="form__error" v-if="(!$v.lastName.alpha && $v.lastName.$dirty) && submited" >Veuillez ajouter un prénom valide</span>
                     </div>
 
                     <div class="form__box">
                         <label for="email" class="form__label">E-mail</label>
-                        <input type="email" name="email" id="email" value="" class="form__input" placeholder="exemple@hotmail.com" v-model="email">
+                        <input type="email" name="email" id="email" class="form__input" placeholder="exemple@hotmail.com" v-model="email">
+                        <span class="form__error" v-if="((!$v.email.required || !$v.email.email) && $v.email.$dirty) && submited">Veuillez rentrer un email valide</span>
                     </div>
 
                     <div class="form__box">
                         <label for="password" class="form__label">Mot de passe</label>
-                        <input type="password" name="password" id="password" value="" class="form__input" placeholder="mon-mot-de-passe" v-model="password">
+                        <input type="password" name="password" id="password"  class="form__input" placeholder="mon-mot-de-passe" v-model="password">
+                        <span class="form__error" v-if="(!$v.password.required && $v.password.$dirty) && submited" >Veuillez rentrer un mot de passe </span>
+                        <span class="form__error" v-if="(!$v.password.minLength || !$v.password.maxLength) && $v.password.$dirty">Le mot de passe doit être entre {{ $v.password.$params.minLength.min }} et {{ $v.password.$params.maxLength.max }} </span>
                     </div>
-                    
-                    
+                                      
                     <div class="form__nav">
                         <router-link to="/Login" class="form__button form__button--inactive" >SE CONNECTER</router-link>
                         <button class="form__button" type="submit" >S'INSCRIRE</button>
@@ -45,7 +51,7 @@
 <script>
 
 import axios from 'axios'
-
+import { required, minLength, maxLength, alpha, email} from 'vuelidate/lib/validators'
 export default {
     name: 'Signup',
     data(){
@@ -53,15 +59,37 @@ export default {
             firstName: "",
             lastName: "",
             email:"",
-            password:""
-            
+            password:"",
+            submited: false
+        }
+    },
+    validations: {
+        firstName: {
+            required,
+            alpha
+        },
+        lastName: {
+            required,
+            alpha
+        },
+        email: {
+            required,
+            email
+        },
+        password:{
+            required,
+            maxLength: maxLength(18),
+            minLength: minLength(6)
         }
     },
     methods: {
-        signup(){
-            if (this.firstName === "" || this.lastName === "" || this.email === "" || this.password === "" ){
-                alert("Veuillez renseigner tous les champs !")
-            } else {
+        submitForm() {
+            this.$v.$touch();
+            this.submited = true;
+            console.log(!this.$v.password.minLength);
+            console.log(!this.$v.password.maxLength);
+            console.log(!this.$v.password.$dirty);
+            if(!this.$v.$invalid) {
                 axios.post('http://localhost:3000/api/signup',{
                     firstName: this.firstName,
                     lastName: this.lastName,
@@ -129,6 +157,7 @@ export default {
         &__box{
             display: flex;
             flex-direction: column;
+            position: relative;
         }
         &__label{
             display: block;
@@ -142,7 +171,7 @@ export default {
             height: 56px;
             border-radius: 10px;
             border: 1px solid #545454;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             padding-left: 21px;
             font-size: 20px;
             color: #AFAFAF;
@@ -171,6 +200,13 @@ export default {
                 color: #00497A;
                 border: 1px solid #00497A;
             }
+        }
+        &__error{
+            font-size: 14px;
+            position: absolute;
+            bottom: 18px;
+            left: 0;
+            color: red;
         }
     }
 

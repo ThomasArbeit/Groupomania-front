@@ -6,6 +6,12 @@
                 <p class="post__user">{{ post.User.firstName }}  {{ post.User.lastName }}</p>
                 <p class="post__desc">{{ post.content }}</p>
                 <p class="post__date">{{ post.createdAt }}</p>
+                <button 
+                v-if="post.creator_Id == userId || userRole == 1"
+                v-on:click='toggleModale'
+                class="home__button">
+                    Modifier mon post
+                </button>
             </div>
 
             <div class="post__image">
@@ -17,6 +23,7 @@
             </div>
             <CreateComment/>
             <Comments/>
+            <ModalePost v-bind:revele="revele" v-bind:post="post" v-bind:toggleModale="toggleModale"/>
         </div>
     </div>
 </template>
@@ -26,16 +33,28 @@ import axios from 'axios'
 import CreateComment from './CreateComment'
 import Comments from './Comments'
 import Likes from './Likes'
+import ModalePost from './ModalePost'
+import VueJwtDecode from 'vue-jwt-decode'
 export default {
     name: 'Post',
     components:{
         CreateComment,
         Comments,
-        Likes
+        Likes,
+        ModalePost,
+        
     },
     data(){
         return {
             post: "",
+            revele: false,
+            userRole: VueJwtDecode.decode(sessionStorage.getItem('usertoken')).role,
+            userId: sessionStorage.getItem('userId')
+        }
+    },
+    methods: {
+        toggleModale(){
+            this.revele = !this.revele;
         }
     },
     beforeMount() {

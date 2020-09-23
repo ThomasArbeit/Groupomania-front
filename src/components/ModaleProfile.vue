@@ -48,7 +48,6 @@ export default {
         modifyProfile(){
             if (this.firstName === "" || this.lastName === "" || this.email === ""){
                 this.success = true;
-                this.response = false
                 this.message = "Veuillez renseigner tous les champs !"
                 document.getElementById('response').classList = 'modale__error'
             } else {
@@ -79,7 +78,7 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
     .modale{
         position: fixed;
         top:0;
@@ -87,6 +86,7 @@ export default {
         bottom:0;
         left:0;
 
+        z-index: 2;
         padding: 40px;
 
         display: flex;

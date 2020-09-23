@@ -4,7 +4,7 @@
             <NavBar/>
         </div>
         <div class="middleBar">
-            <Profile/>
+            <Profile v-bind:userId="userId" v-bind:token="token"/>
             <ModaleProfile v-bind:revele="revele" v-bind:toggleModale="toggleModale" />
             <button v-on:click='toggleModale'  class="home__button">Modifier mes informations</button>
         </div>
@@ -22,7 +22,9 @@ export default {
     name: 'Home',
     data(){
         return{
-            revele: false
+            revele: false,
+            userId: sessionStorage.getItem('userId'),
+            token: sessionStorage.getItem('usertoken')
         }
     },
     components:{
