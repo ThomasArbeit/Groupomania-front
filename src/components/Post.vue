@@ -17,9 +17,8 @@
             <div class="post__image">
                 <img :src="post.imageUrl" alt="" class="post__img">
             </div>
-            <div class="post__commsAndLike">
-                <Likes/>
-            </div>
+           
+            <Likes v-bind:post="post"/>
             <CreateComment/>
             <Comments/>
             <ModalePost v-bind:revele="revele" v-bind:post="post" v-bind:toggleModale="toggleModale"/>

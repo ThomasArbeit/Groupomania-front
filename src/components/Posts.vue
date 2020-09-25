@@ -17,10 +17,7 @@
                     <img :src="post.imageUrl" alt="" class="post__img">
                 </div>
             </router-link>
-            <div class="post__commsAndLike" >
-                <p href="#" class="post__link">{{ post.likes }} likes</p>
-            </div>
-            
+            <Likes v-bind:post="post"/>
         </div>
     </div>
 </template>
@@ -28,12 +25,15 @@
 <script>
 import axios from 'axios'
 import VueJwtDecode from 'vue-jwt-decode'
+import Likes from './Likes'
 export default {
     name: 'Posts',
+    components: {
+        Likes
+    },
     data(){
         return {
             posts: "",
-            likes:"",
             userRole: "",
             userId: sessionStorage.getItem('userId'),
             liked: '',
@@ -58,7 +58,7 @@ export default {
             .catch(error => console.log(error));
         }
     },
-    mounted() {
+    beforeMount() {
             const decodedToken = VueJwtDecode.decode(sessionStorage.getItem('usertoken'));
             const UserRole = decodedToken.role;
             this.userRole = UserRole;
@@ -100,6 +100,7 @@ export default {
             box-shadow: 0px 0px 30px hsla(0, 0%, 0%, 0.26);
         }
         margin-bottom: 30px;
+        padding-bottom: 30px;
         background-color: white;
 
         border-radius: 10px;

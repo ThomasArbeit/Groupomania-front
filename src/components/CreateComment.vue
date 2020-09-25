@@ -19,7 +19,7 @@
 import axios from 'axios'
 import { required } from 'vuelidate/lib/validators'
 export default {
-    name: 'Comment',
+    name: 'CreateComment',
     data(){
         return{
             comment: "",

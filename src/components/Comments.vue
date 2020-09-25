@@ -4,15 +4,18 @@
         <div class="comments" id="comment" v-for='comment in comments' :key='comment.commentId'>
             <div class="comments__title">
                 <p class="comments__user">{{ comment.User.firstName }}  {{ comment.User.lastName }}</p>
-                <p class="comments__date">{{ comment.createdAt }}</p> 
-                <button class="comments__delete" v-if="comment.commentor_Id == userId || userRole == 1" v-on:click="deleteComment(comment.commentId)">
-                    Supprimer 
-                    <font-awesome-icon icon="trash" />
-                </button>
-                <button class="comments__modify" v-if="(comment.commentor_Id == userId || userRole == 1) && comment.modify == false" v-on:click="modifyPrompt(comment)">
-                    Modifier
-                    <font-awesome-icon icon="pen" />
-                </button>
+                <div class="comments__optionToggle" v-on:click="optionToggle(comment)" v-if="comment.commentor_Id == userId || userRole == 1"><font-awesome-icon icon="ellipsis-h" /></div>
+                <div class="comments__option" v-if="comment.option">
+                    <div class="comments__button comments__button--delete" v-if="comment.commentor_Id == userId || userRole == 1" v-on:click="deleteComment(comment.commentId)">
+                        Supprimer 
+                        <font-awesome-icon icon="trash" />
+                    </div>
+                    <div class="comments__button comments__button--modify" v-if="(comment.commentor_Id == userId || userRole == 1) && comment.modify == false" v-on:click="modifyPrompt(comment), optionToggle(comment)" >
+                        Modifier
+                        <font-awesome-icon icon="pen" />
+                    </div>
+                </div>
+                
             </div>
             <p class="comments__content" v-if="comment.modify == false">{{ comment.content }} </p>
             <form class="comments__form" method="POST" v-on:submit.prevent="modifyComm(comment.commentId, comment)" v-if="comment.modify == true">
@@ -37,16 +40,17 @@ export default {
         }
     },
     methods:{
+        optionToggle(comment){
+            comment.option = !comment.option
+        },
         modifyPrompt(comment){
-            const index = this.comments.indexOf(comment);
-            this.comments[index].modify = !this.comments[index].modify;
+            comment.modify = !comment.modify;
         },
         modifyComm(id, comment){
             const commentId = id;
             const token = sessionStorage.getItem('usertoken');
-            const index = this.comments.indexOf(comment);
             const body = {
-                content: this.comments[index].content
+                content: comment.content
             }
             const header = {
                 headers :{
@@ -57,7 +61,7 @@ export default {
             axios.post('http://localhost:3000/api/comments/' + commentId, body, header )
             .then(res => {
                 console.log(res);
-                this.comments[index].modify = !this.comments[index].modify;
+                comment.modify = !comment.modify;
             })
             .catch(error => console.log(error));
         },
@@ -78,7 +82,7 @@ export default {
             .catch(error => console.log(error));
         }
     },
-    mounted() {
+    beforeMount() {
             const hashUrl = window.location.hash;
             const post_Id = hashUrl.split('/')[2];
             const token = sessionStorage.getItem('usertoken');
@@ -94,6 +98,7 @@ export default {
                 console.log("les commentaires", data);
                 for (let i = 0; i<data.length; i++){
                     data[i].modify = false;
+                    data[i].option = false;
                 }
                 this.comments = data;
             })
@@ -136,36 +141,55 @@ export default {
         &__content{
             margin-bottom: 15px;
         }
-        &__delete{
-            position: absolute;
-            top: 0px;
-            right: 5px;
-            z-index: 2;
-            border: none;
-            padding: 5px 8px;
-            border-radius: 30px;
-            color: white;
-            background-color: #FD2D01;
-            cursor: pointer;
-            &:hover{
-                box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.199);
-            }
-        }
-        &__modify{
-            position: absolute;
-            top: 35px;
-            right: 5px;
-            z-index: 2;
-            border: none;
-            padding: 5px 8px;
-            border-radius: 30px;
-            color: white;
-            background-color: #004367;
-            cursor: pointer;
-        }
+        
 
         &__form{
             position: relative;
+        }
+
+        &__option{
+            padding: 10px 5px;
+            position: absolute;
+            top: 0px;
+            right: 40px;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: 0px 0px 5px   rgb(129, 129, 129);
+            display: flex;
+        }
+
+        &__button{
+            display: block;
+            padding: 5px 10px;
+            border-radius: inherit;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 0 5px;
+            &--delete{
+                color: red;
+                
+            }
+            &--modify{
+                color:#004367;
+            }
+
+            &:hover{
+                background-color: rgba(238, 238, 238, 1);
+            }
+        }
+
+        &__optionToggle{
+            position: absolute;
+            top: 0px;
+            right: 5px;
+            font-size: 16px;
+            padding: 2px 6px;
+            border-radius: 5px;
+            cursor: pointer;
+
+            &:hover{
+                background-color: rgb(201, 201, 201);
+            }
         }
     }
 </style>

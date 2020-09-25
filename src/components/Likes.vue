@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="post__likebox">
         <p>{{ numberOfLikes }} Likes</p>
-        <p class="post__like" id="heart" v-on:click="Likes()"><font-awesome-icon icon="heart" /></p>
+        <p class="post__like" :id="post.postId" v-on:click="Likes()"><font-awesome-icon icon="heart" /></p>
     </div>
         
 </template>
@@ -10,20 +10,18 @@
 import axios from 'axios'
 export default {
     name: 'Likes',
+    props:['post'],
     data(){
         return {
             numberOfLikes: "",
-            isLiked: "",
             userId: parseInt(sessionStorage.getItem('userId')),
             token: sessionStorage.getItem('usertoken'),
-            heart: document.getElementById("heart")
         }
     },
-    beforeMount() {
-        const hashUrl = window.location.hash;
-        const post_Id = hashUrl.split('/')[2];
+    created() {
+        console.log("Je me crée (Likes)")
+        const post_Id = this.post.postId
         const token = this.token;
-        const heart = document.getElementById("heart");
         const body = {
             userId: this.userId
         }
@@ -53,10 +51,12 @@ export default {
             const data = res.data;
             console.log("Le like", data);
             if(data.length == 0){
-                this.isLiked = false;
+                this.post.isLiked = false;
+                console.log(this.post.isLiked)
             } else {
-                heart.classList = "post__like post__liked"
-                this.isLiked = true;
+                this.post.isLiked = true;
+                document.getElementById(this.post.postId).classList = "post__like post__liked"
+                console.log(this.post.isLiked)
             }
             
         })
@@ -64,10 +64,8 @@ export default {
     },
     methods:{
         Likes(){
-            const hashUrl = window.location.hash;
-            const post_Id = hashUrl.split('/')[2];
+            const post_Id = this.post.postId
             const token = this.token;
-            let heart = document.getElementById('heart');
             let body = {
                 userId: this.userId
             }
@@ -78,7 +76,7 @@ export default {
                 }
             }
             console.log(body);
-            if (this.isLiked == false){
+            if (this.post.isLiked == false){
                 console.log("Je suis en train de liker");
                 body.likes = 1;
                 console.log(body)
@@ -89,7 +87,7 @@ export default {
 
 
                 //Changement de la classe du bouton like pour devenir rouge
-                heart.classList = "post__like post__liked";
+                document.getElementById(this.post.postId).classList = "post__like post__liked"
                 this.numberOfLikes = this.numberOfLikes + 1;
 
             } else {
@@ -103,10 +101,10 @@ export default {
 
 
                 // Changement de la classe du bouton like pour devenir sans couleur
-                heart.classList = "post__like";
+                document.getElementById(this.post.postId).classList = "post__like"
                 this.numberOfLikes = this.numberOfLikes - 1;
             }
-            this.isLiked = !this.isLiked
+            this.post.isLiked = !this.post.isLiked
         }
     }
 }
@@ -115,6 +113,10 @@ export default {
 
 <style lang="scss" >
     .post{
+        &__likebox{
+            padding: 10px;
+            position: relative;
+        }
         &__like{
         position: absolute;
         top: 10px;
