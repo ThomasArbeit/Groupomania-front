@@ -22,8 +22,10 @@
 
                     <div class="form__box">
                         <label for="email" class="form__label">E-mail</label>
-                        <input type="email" name="email" id="email" class="form__input" placeholder="exemple@hotmail.com" v-model="email">
+                        <input type="email" name="email" id="email" class="form__input" placeholder="exemple@hotmail.com" v-model="email" v-on:focus="deActivate">
                         <span class="form__error" v-if="((!$v.email.required || !$v.email.email) && $v.email.$dirty) && submited">Veuillez rentrer un email valide</span>
+                        <span class="form__error" v-if="responseEmailError">Cette adresse mail n'est pas disponible</span>
+                        
                     </div>
 
                     <div class="form__box">
@@ -36,6 +38,7 @@
                     <div class="form__nav">
                         <router-link to="/Login" class="form__button form__button--inactive" >SE CONNECTER</router-link>
                         <button class="form__button" type="submit" >S'INSCRIRE</button>
+                        
                     </div>
                     
                 </form>
@@ -60,7 +63,8 @@ export default {
             lastName: "",
             email:"",
             password:"",
-            submited: false
+            submited: false,
+            responseEmailError: false
         }
     },
     validations: {
@@ -83,6 +87,9 @@ export default {
         }
     },
     methods: {
+        deActivate() {
+            this.responseEmailError= false
+        },
         submitForm() {
             this.$v.$touch();
             this.submited = true;
@@ -113,9 +120,14 @@ export default {
                         sessionStorage.setItem('userId', parseInt(res.data.userId));
                         window.location.href="/#/Home";
                     })
-                    .catch(error => console.log({error}));
+                    .catch(error => {
+                        console.log({error})
+                    });
                 })
-                .catch(error => console.log({error}));
+                .catch(error => {
+                    this.responseEmailError = true;
+                    console.log({error})
+                });
             }
         }
     }
@@ -177,6 +189,7 @@ export default {
             color: #AFAFAF;
         }
         &__nav{
+            position: relative;
             display: flex;
             justify-content: space-between;
         }
@@ -207,6 +220,10 @@ export default {
             bottom: 18px;
             left: 0;
             color: red;
+            &--high{
+                bottom: 150px;
+                left: 0;
+            }
         }
     }
 

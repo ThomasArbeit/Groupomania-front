@@ -8,21 +8,20 @@
                 <div class="modale__formbox">
                     <label for="firstName" class="modale__label">Votre nom</label>
                     <input type="text" id="firstName" class="modale__input" placeholder="Changez votre nom" v-model="firstName">
+                    <span class="form__error" v-if="(!$v.firstName.required && $v.firstName.$dirty) && submited">Veuillez ajouter votre nom</span>
                 </div>
                 <div class="modale__formbox">
                     <label for="lastName" class="modale__label">Votre prénom</label>
                     <input type="text" id="lastName" class="modale__input" placeholder="Changez votre prénom" v-model="lastName">
+                    <span class="form__error" v-if="(!$v.lastName.required && $v.lastName.$dirty) && submited">Veuillez ajouter votre nom</span>
                 </div>
                 <div class="modale__formbox">
                     <label for="email" class="modale__label">Votre E-mail</label>
                     <input type="email" id="email" class="modale__input" placeholder="Changez votre E-mail" v-model="email">
+                    <span class="form__error" v-if="((!$v.email.required || !$v.email.email) && $v.email.$dirty) && submited">Veuillez rentrer un email valide</span>
+                    <span class="form__error" v-if="responseEmailError">Cette adresse mail n'est pas disponible</span>
                 </div>
                 <button type="submit" class="modale__submit">VALIDER</button>
-                <div v-show="success" >
-                    <div id='response'>
-                        <p>{{ message }}</p>
-                    </div>
-                </div>
                 
             </form>
         </div>
@@ -31,6 +30,7 @@
 
 <script>
 import axios from 'axios'
+import { required, email} from 'vuelidate/lib/validators'
 export default {
     name: 'ModaleProfile',
     props: ['revele', 'toggleModale'],
@@ -40,22 +40,32 @@ export default {
             lastName:"",
             email:"",
             userId: sessionStorage.getItem("userId"),
-            success:"",
-            message:""
+            responseEmailError: false,
+            submited: false
+        }
+    },
+    validations: {
+        firstName:{
+            required
+        },
+        lastName:{
+            required
+        },
+        email:{
+            required,
+            email
         }
     },
     methods:{
         modifyProfile(){
-            if (this.firstName === "" || this.lastName === "" || this.email === ""){
-                this.success = true;
-                this.message = "Veuillez renseigner tous les champs !"
-                document.getElementById('response').classList = 'modale__error'
-            } else {
+            this.$v.$touch();
+            this.submited = true;
+            if (!this.$v.$invalid){
                 const token = sessionStorage.getItem("usertoken");
                 axios.post('http://localhost:3000/api/users/' + this.userId,{
                     firstName: this.firstName,
                     lastName: this.lastName,
-                    email: this.email,password: this.password,
+                    email: this.email,
                     userId: this.userId
                 },
                 {
@@ -66,13 +76,13 @@ export default {
                 })
                 .then(res => {
                     console.log(res);
-                    this.success = true;
-                    this.message = "Votre compte a bien été modifié";
-                    document.getElementById('response').classList = 'modale__success'
                     window.location.reload();
                 })
-                .catch(error => console.log(error));
-            }
+                .catch(error =>{
+                    console.log(error);
+                    this.responseEmailError = true;
+                }) 
+            } 
         }
     }
 }
@@ -149,7 +159,8 @@ export default {
         &__formbox{
             display: flex;
             flex-direction: column;
-            margin-bottom: 20px;
+            padding-bottom: 40px;
+            position: relative;
         }
 
         &__label{

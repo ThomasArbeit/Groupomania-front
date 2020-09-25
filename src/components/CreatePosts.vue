@@ -6,24 +6,38 @@
                 <label for="title" class="createPost__formlabel">Titre de votre post</label>
                 <input type="text" name="title" id="title" value="" v-model="content" class="createPost__forminput" placeholder="Ecrivez votre titre ici">
             </div>
+
             <div class="createPost__formbox--small">
                 <label for="file" class="createPost__formlabel createPost__formlabel--file"><font-awesome-icon icon="images" /></label>
                 <input type="file" name="image" id="file" @change="onFileSelected" hidden>
                 <button type="submit" class="createPost__formsubmit"><font-awesome-icon icon="paper-plane" /></button>
-            </div>
-            
+            </div>  
+
         </form>
+        <span v-if="selectedFile">Image sélectionnée : {{ selectedFile.name }}</span><br>
+        <span class="createPost__error" v-if="(!$v.content.required && $v.content.$dirty) && submited" >Veuillez ajouter un titre </span><br>
+        <span class="createPost__error" v-if="(!$v.selectedFile.required && $v.selectedFile.$dirty) && submited" >Veuillez ajouter une image </span>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { required } from 'vuelidate/lib/validators'
 export default {
     name: 'CreatePosts',
     data(){
         return{
             content: '',
-            selectedFile: null
+            selectedFile: null,
+            submited: false
+        }
+    },
+    validations: {
+        content: {
+            required
+        },
+        selectedFile: {
+            required
         }
     },
     methods:{
@@ -32,24 +46,28 @@ export default {
             console.log(this.selectedFile);
         },
         create(){
-            const userId = parseInt(sessionStorage.getItem('userId'));
-            const token = sessionStorage.getItem('usertoken');
-            let fd = new FormData();
-            fd.append('userId', userId);
-            fd.append('content', this.content);
-            fd.append('image', this.selectedFile, this.selectedFile.name);
-            axios.post('http://localhost:3000/api/posts/create', fd, 
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(res => {
-                console.log(res);
-                window.location.reload();
-            })
-            .catch(error => console.log(error));
+            this.submited = true;
+            this.$v.$touch();
+            if (!this.$v.$invalid){
+                const userId = parseInt(sessionStorage.getItem('userId'));
+                const token = sessionStorage.getItem('usertoken');
+                let fd = new FormData();
+                fd.append('userId', userId);
+                fd.append('content', this.content);
+                fd.append('image', this.selectedFile, this.selectedFile.name);
+                axios.post('http://localhost:3000/api/posts/create', fd, 
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(res => {
+                    console.log(res);
+                    window.location.reload();
+                })
+                .catch(error => console.log(error));
+            }
         }
     }
 }
@@ -74,6 +92,7 @@ export default {
             display: flex;
             flex-direction: column;
             flex: 4;
+            position: relative;
 
             &--small{
                 display: flex;
@@ -88,6 +107,7 @@ export default {
             font-size: 20px;
             font-weight: 400;
             margin-bottom: 12px;
+            
 
             &--file{
                 text-decoration: underline;
@@ -121,6 +141,11 @@ export default {
             border-radius: 10px;
             cursor: pointer;
             font-size: 20px;
+        }
+
+        &__error{
+            color: red;
+            font-size: 15px;
         }
     }
 

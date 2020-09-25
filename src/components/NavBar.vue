@@ -1,6 +1,6 @@
 <template>
     <nav class="navigation">
-        <img class="navigation__logo" src="../assets/white-logo.png" alt="logo Groupomania blanc">
+        <router-link class="navigation__link" to="/Home"><img class="navigation__logo" src="../assets/white-logo.png" alt="logo Groupomania blanc"></router-link>
         <div class="navigation__links">
             <router-link class="navigation__link" to="/Home">Accueil</router-link>
             <router-link class="navigation__link" to="/Profile">Mon Profil</router-link>

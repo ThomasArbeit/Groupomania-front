@@ -26,20 +26,17 @@
 
 <script>
 import axios from 'axios'
+import VueJwtDecode from 'vue-jwt-decode'
 export default {
     name: 'Comments',
     data(){
         return {
             comments: "",
-            userRole: "",
+            userRole: VueJwtDecode.decode(sessionStorage.getItem('usertoken')).role,
             userId: sessionStorage.getItem('userId'),
         }
     },
     methods:{
-        toggleModify(id, comment){
-            const index = this.comments.indexOf(comment);
-            this.comments[index].modify = !this.comments[index].modify;
-        },
         modifyPrompt(comment){
             const index = this.comments.indexOf(comment);
             this.comments[index].modify = !this.comments[index].modify;
@@ -163,7 +160,7 @@ export default {
             padding: 5px 8px;
             border-radius: 30px;
             color: white;
-            background-color: #02096b;
+            background-color: #004367;
             cursor: pointer;
         }
 

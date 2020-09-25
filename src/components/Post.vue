@@ -18,7 +18,6 @@
                 <img :src="post.imageUrl" alt="" class="post__img">
             </div>
             <div class="post__commsAndLike">
-                <p>{{ post.likes }} Likes</p>
                 <Likes/>
             </div>
             <CreateComment/>

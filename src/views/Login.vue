@@ -2,17 +2,24 @@
     <main>
         <div class="left">
             <div class="form">
-                <form method="post" class="login__form" v-on:submit.prevent="login()">
-                    <img src="../assets/black_logo.png" alt="Groupomania logo" class="login__logo">
-                    <h1 class="login__title">Bonjour, ravi de vous revoir !</h1>
-                    <div class="login__box">
-                        <label for="email" class="login__label">E-mail</label>
-                        <input type="email" name="email" id="email" value="" class="login__input" v-model="email" placeholder="exemple@hotmail.com" >
+                <form method="post" class="form__form" v-on:submit.prevent="login()">
+                    <img src="../assets/black_logo.png" alt="Groupomania logo" class="form__logo">
+                    <h1 class="form__title">Bonjour, ravi de vous revoir !</h1>
+                    
+                    <div class="form__box">
+                        <span class="form__error form__error--high" v-if="responseError && submited">Votre E-mail ou votre mot de passe est incorrect</span>
+                        <label for="email" class="form__label">E-mail</label>
+                        <input type="email" name="email" id="email" value="" class="form__input" v-model="email" placeholder="exemple@hotmail.com" v-on:focus="deActivate">
+                        <span class="form__error" v-if="((!$v.email.required || !$v.email.email) && $v.email.$dirty) && submited">Veuillez rentrer un email valide</span>
                     </div>
-                    <div class="login__box">
-                        <label for="password" class="login__label">Mot de passe</label>
-                        <input type="password" name="password" id="password" value="" class="login__input" v-model="password" placeholder="mon-mot-de-passe" >
+
+                    <div class="form__box">
+                        <label for="password" class="form__label">Mot de passe</label>
+                        <input type="password" name="password" id="password" value="" class="form__input" v-model="password" placeholder="mon-mot-de-passe" v-on:focus="deActivate">
+                        <span class="form__error" v-if="(!$v.password.required && $v.password.$dirty) && submited" >Veuillez rentrer un mot de passe </span>
+                        <span class="form__error" v-if="(!$v.password.minLength || !$v.password.maxLength) && $v.password.$dirty">Le mot de passe doit être entre {{ $v.password.$params.minLength.min }} et {{ $v.password.$params.maxLength.max }} </span>
                     </div>
+
                     <button class="login__button" type="submit">SE CONNECTER</button>
                     <div class="separation">
                         <div class="separation__line"></div>
@@ -32,6 +39,7 @@
 
 <script>
 import axios from 'axios'
+import { required, minLength, maxLength, email} from 'vuelidate/lib/validators'
 
 export default {
     name: 'Login',
@@ -39,13 +47,29 @@ export default {
         return{
             email:"",
             password:"",
+            submited: false,
+            responseError: false
+        }
+    },
+    validations: {
+        email: {
+            required,
+            email
+        },
+        password: {
+            required,
+            minLength: minLength(6),
+            maxLength: maxLength(18)
         }
     },
     methods: {
+        deActivate() {
+            this.responseError = false
+        },
         login(){
-            if (this.email === "" || this.password === ""){
-                alert("Veuillez entrer votre email ainsi que votre mot de passe !")
-            } else {
+            this.submited = true;
+            this.$v.$touch();
+            if (!this.$v.$invalid){
                 axios.post('http://localhost:3000/api/login',{
                     email: this.email,
                     password: this.password
@@ -56,12 +80,14 @@ export default {
                 .then(res => {
                     sessionStorage.setItem('usertoken', res.data.token);
                     sessionStorage.setItem('userId', parseInt(res.data.userId));
-                    window.isSignedIn=true;
                     this.$router.push('/Home');
                     console.log(window.isSignedIn);
                     
                 })
-                .catch(error => console.log({error}));
+                .catch(error => {
+                    console.log({error});
+                    this.responseError = true;
+                })
             }
         }
     }
@@ -104,6 +130,7 @@ export default {
             margin-bottom: 54px;
         }
         &__box{
+            position: relative;
             display: flex;
             flex-direction: column;
         }

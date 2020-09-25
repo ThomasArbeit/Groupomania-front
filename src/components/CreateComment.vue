@@ -7,6 +7,7 @@
             <div class="comment__formbox" >
                 <label for="comment" class="comment__label">Votre commentaire :</label>
                 <input type="text" id="comment" class="comment__input" v-model="comment" placeholder="Entrez votre commentaire">
+                <span class="form__error" v-if="(!$v.comment.required && $v.comment.$dirty) && submited" >Veuillez entrer un commentaire avant de valider</span>
             </div>
             <button class="comment__button" type="submit">VALIDER</button>
         </form>
@@ -16,38 +17,46 @@
 
 <script>
 import axios from 'axios'
+import { required } from 'vuelidate/lib/validators'
 export default {
     name: 'Comment',
     data(){
         return{
             comment: "",
+            submited: false
+        }
+    },
+    validations:{
+        comment:{
+            required
         }
     },
     methods:{
         submit(){
-            const hashUrl = window.location.hash;
-            const post_Id = hashUrl.split('/')[2];
-            const token = sessionStorage.getItem('usertoken');
-            const userId = sessionStorage.getItem('userId');
-            console.log(userId);
-            const body = {
-                userId: userId,
-                content: this.comment
-            };
-            const header = {
-                headers : {
-                    'Content-Type': 'application/json',
-                    'Authorization' : `Bearer ${token}`
-                }
-            };
-            console.log(post_Id);
-            axios.post('http://localhost:3000/api/comments/create/' + post_Id, body, header )
-            .then(res => {
-                console.log(res);
-                this.comment = "";
-                window.location.reload();
-            })
-            .catch(error => console.log({error}));
+            this.submited = true;
+            this.$v.$touch();
+            if(!this.$v.$invalid){
+                const hashUrl = window.location.hash;
+                const post_Id = hashUrl.split('/')[2];
+                const token = sessionStorage.getItem('usertoken');
+                const userId = sessionStorage.getItem('userId');
+                const body = {
+                    userId: userId,
+                    content: this.comment
+                };
+                const header = {
+                    headers : {
+                        'Content-Type': 'application/json',
+                        'Authorization' : `Bearer ${token}`
+                    }
+                };
+                axios.post('http://localhost:3000/api/comments/create/' + post_Id, body, header )
+                .then(res => {
+                    console.log(res);
+                    window.location.reload();
+                })
+                .catch(error => console.log({error}));
+            }
         }
     }
 }
@@ -68,6 +77,8 @@ export default {
         &__formbox{
             width: 100%;
             margin-bottom: 18px;
+            position: relative;
+            padding-bottom: 40px;
         }
         &__label{
             display: block;
@@ -82,13 +93,16 @@ export default {
             font-size: 16px;
         }
         &__button{
-            width: 20%;
             background-color: #004367;
             border-radius: 10px;
             padding: 12px 30px;
             border: none;
             color: white;
             font-size: 16px;
+            cursor: pointer;
+            &:hover{
+                opacity: 0.9;
+            }
         }
     }
 </style>
