@@ -76,8 +76,8 @@ export default {
             }
             axios.delete('http://localhost:3000/api/comments/' + commentId, header )
             .then(res => {
-                    console.log(res); 
-                    window.location.reload();
+                    console.log(res);
+                    window.location.reload()
                 })
             .catch(error => console.log(error));
         }

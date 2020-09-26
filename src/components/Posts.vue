@@ -44,13 +44,14 @@ export default {
         deletePost(id){
             const postId = id;
             const token = sessionStorage.getItem('usertoken');
-            const header = {
+            const url = 'http://localhost:3000/api/posts/' + postId
+
+            axios.delete(url, {
                 headers :{
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 }
-            }
-            axios.delete('http://localhost:3000/api/posts/' + postId, header )
+            })
             .then(res => {
                 console.log(res);
                 window.location.reload();

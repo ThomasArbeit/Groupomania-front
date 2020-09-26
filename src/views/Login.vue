@@ -80,6 +80,7 @@ export default {
                 .then(res => {
                     sessionStorage.setItem('usertoken', res.data.token);
                     sessionStorage.setItem('userId', parseInt(res.data.userId));
+                    this.$store.commit("setAuthentication", true);
                     this.$router.push('/Home');
                     console.log(window.isSignedIn);
                     

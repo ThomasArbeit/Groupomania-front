@@ -9,14 +9,6 @@
 <script>
 export default {
   name: 'App',
-  beforeMount(){
-    const token = sessionStorage.getItem('usertoken');
-    const pageurl = window.location.href;
-    const url = pageurl.split('#')[1];
-    if((url != "/Login" && url != "/Signup") && (token == null)){
-      window.location = "http://localhost:8080/#/Login";
-    }
-  }
 }
 </script>
 
