@@ -42,6 +42,11 @@ export default {
         height: 80px;
         width:100%;
         padding: 20px;
+
+        @media (max-width: 556px){
+            height: 120px;
+        }
+
     }
 
     .middleBar{

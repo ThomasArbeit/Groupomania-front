@@ -81,6 +81,10 @@ export default {
 
         &__form{
             display: flex;
+
+            @media (max-width: 556px){
+                flex-direction: column;
+            }
         }
 
         &__title{
@@ -99,6 +103,11 @@ export default {
                 flex: 1;
                 justify-content: space-around;
                 align-items: flex-end;
+
+                @media (max-width: 556px){
+                    justify-content: flex-end;
+                    margin-top: 5px;
+                }
             }
         }
 
@@ -115,6 +124,7 @@ export default {
                 margin-bottom: 0;
                 text-align: center;
                 padding: 15px;
+                margin-right: 5px;
                 border: 1px solid #545454;
                 border-radius: 10px;
                 font-size: 20px;
@@ -130,6 +140,10 @@ export default {
             padding-left: 21px;
             font-size: 20px;
             color: #AFAFAF;
+
+            @media (max-width: 556px){
+                width: 100%;
+            }
         }
 
         &__formsubmit{
@@ -144,8 +158,12 @@ export default {
         }
 
         &__error{
-            color: red;
+            color: rgb(209, 0, 0);
             font-size: 15px;
+
+            @media (max-width: 556px){
+                padding-top: -130px;
+            }
         }
     }
 

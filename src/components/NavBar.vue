@@ -40,6 +40,10 @@ export default {
 
         position: relative;
 
+        @media (max-width: 556px){
+            flex-direction: column;
+        }
+
 
         &__link{
             display: inline-block;
@@ -51,6 +55,10 @@ export default {
 
             &:active{
                 opacity: 0.7;
+            }
+
+            @media (max-width: 556px){
+                font-size: 12px;
             }
         }
     }

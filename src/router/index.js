@@ -49,6 +49,8 @@ const router = new VueRouter({
   routes
 })
 
+
+// Cérification de l'authentification avant l'accès aux routes (autre que login et signup)
 router.beforeEach((to, from, next) => {
   // Si authenticated est true alors, on a accès aux pages
   if(store.state.authenticated === true){ 
