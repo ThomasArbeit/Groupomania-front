@@ -1,6 +1,6 @@
 <template>
     <div class="posts">
-        <h1 class="posts__title"> Un seul Post </h1>
+        <h1 class="post__h1"> Un seul Post </h1>
         <div class="post" id="post" v-for="post in post" :key="post.postId">
             <div class="post__title">
                 <p class="post__user">{{ post.User.firstName }}  {{ post.User.lastName }}</p>
@@ -87,6 +87,10 @@ export default {
 
         border-radius: 10px;
         box-shadow: 0px 0px 10px hsla(0, 0%, 0%, 0.26);
+
+        &__h1{
+            margin: 90px 0 45px;;
+        }
 
         &__title{
             font-size: 15px;

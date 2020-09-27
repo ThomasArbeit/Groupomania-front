@@ -57,9 +57,17 @@ router.beforeEach((to, from, next) => {
   } else { // Sinon, on vérifie qu'il y ait un token
     console.log("authenticated, false")
     const token = sessionStorage.getItem('usertoken');
+
+    // Si le token n'est pas présent mais que l'utilisateur souhaite accéder aux pages login et signup
+    if(to.name == 'Login' || to.name == 'Signup'){
+      // On le laisse passer
+      console.log("Go to Login or Signup page")
+      next();
+
     // Si le token est présent, et que l'on veut aller sur une page autre que Login et Signup
-    if((token!== null) && (to.name !== 'Login' || to.name !== 'Signup')){  
+    } else if((token!== null) && (to.name !== 'Login' || to.name !== 'Signup')){  
     console.log("Ok")
+
     // On vérifie que le token soit correct
     Axios.get('http://localhost:3000/api/auth', {
       headers: {
@@ -68,19 +76,20 @@ router.beforeEach((to, from, next) => {
       }
     })
     .then((response) => {
-      console.log(response);
-      store.commit("setAuthentication", true);
-      next();
+      console.log("La réponse du serveur" , response.data.message);
+      if(response.data.message === "Ok"){
+        store.commit("setAuthentication", true);
+        next();
+      } else {
+        next('Login');
+      }
+      
     })
     .catch(error => {
       console.log(error); 
-      next(false);
+      next('Login');
     });
-    // Si le token n'est pas présent mais que l'utilisateur souhaite accéder aux pages login et signup
-    } else if(to.name == 'Login' || to.name == 'Signup'){
-      // On le laisse passer
-      console.log("Go to Login or Signup page")
-      next();
+    
       // Si toutes les conditions ne sont pas remplies, alors on redirige la personne vers la page Login
     } else {
       next('Login')
