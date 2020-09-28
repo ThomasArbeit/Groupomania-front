@@ -22,9 +22,6 @@ export default {
         console.log("Je me crée (Likes)")
         const post_Id = this.post.postId
         const token = this.token;
-        const body = {
-            userId: this.userId
-        }
         axios.get('http://localhost:3000/api/likes/' + post_Id,
         {
             headers: {
@@ -36,31 +33,15 @@ export default {
             const data = res.data;
             console.log('Les likes :', data);
             this.numberOfLikes = data.length;
-        })
-        .catch(error => console.log(error));
-
-
-        axios.post('http://localhost:3000/api/likes/' + post_Id, body,
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(res => {
-            const data = res.data;
-            console.log("Le like", data);
-            if(data.length == 0){
-                this.post.isLiked = false;
-                console.log(this.post.isLiked)
-            } else {
+            if(res.data.find(u => u.liker_Id === this.userId )){
                 this.post.isLiked = true;
                 document.getElementById(this.post.postId).classList = "post__like post__liked"
                 console.log(this.post.isLiked)
+            } else {
+                this.post.isLiked = false;
             }
-            
         })
-        .catch(error => console.log({error}));
+        .catch(error => console.log(error));
     },
     methods:{
         Likes(){

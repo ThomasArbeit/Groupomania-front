@@ -6,7 +6,6 @@
             <div class="post__title">
                 <p class="post__user">{{ post.User.firstName }}  {{ post.User.lastName }}</p>
                 <p class="post__desc">{{ post.content }}</p>
-                <p class="post__date">{{ post.postId }}</p>
                 <button class="post__delete" v-if="post.creator_Id == userId || userRole == 1" v-on:click="deletePost(post.postId)">
                     Supprimer 
                     <font-awesome-icon icon="trash" />
