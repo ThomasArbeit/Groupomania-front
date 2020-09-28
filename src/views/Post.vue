@@ -1,12 +1,10 @@
 <template>
     <div class="home">
-        <div class="leftBar">
+        <div class="header">
             <NavBar/>
         </div>
-        <div class="middleBar">
+        <div class="contentBar">
             <Post/>
-        </div>
-        <div class="rightBar">
         </div>
     </div>
 </template>

@@ -1,12 +1,12 @@
 <template>
     <div class="home">
-        <div class="leftBar">
+        <div class="header">
             <NavBar/>
         </div>
-        <div class="middleBar">
+        <div class="contentBar">
             <Posts/>
         </div>
-        <div class="rightBar">
+        <div class="addBar">
             <CreatePosts/>
         </div>
     </div>
@@ -34,7 +34,7 @@ export default {
         flex-direction: column;
     }
 
-    .leftBar{
+    .header{
         position: fixed;
         order:1;
         z-index: 2;
@@ -49,14 +49,14 @@ export default {
 
     }
 
-    .middleBar{
+    .contentBar{
         order:3;
         width: 100%;
         max-width: 800px;
         margin: auto;
     }
 
-    .rightBar{
+    .addBar{
         order:2;
         width: 100%;
         max-width: 800px;

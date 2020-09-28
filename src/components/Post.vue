@@ -88,7 +88,7 @@ export default {
         box-shadow: 0px 0px 10px hsla(0, 0%, 0%, 0.26);
 
         &__h1{
-            margin: 90px 0 45px;;
+            margin: 140px 0 45px;;
         }
 
         &__title{

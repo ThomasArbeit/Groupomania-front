@@ -1,15 +1,13 @@
 <template>
     <div class="home">
-        <div class="leftBar">
+        <div class="header">
             <NavBar/>
         </div>
-        <div class="middleBar">
+        <div class="addBar">
             <Profile v-bind:userId="userId" v-bind:token="token"/>
             <ModaleProfile v-bind:revele="revele" v-bind:toggleModale="toggleModale" />
             <button v-on:click='toggleModale'  class="home__button">Modifier mes informations</button>
             <button v-on:click='deleteAccount'  class="home__button home__button--delete">Supprimer mon compte</button>
-        </div>
-        <div class="rightBar">
         </div>
     </div>
 </template>

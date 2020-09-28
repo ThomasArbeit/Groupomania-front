@@ -32,7 +32,7 @@
         </div>
 
         <div class="image">
-            <img src="../assets/Groupomania-logo.jpg" alt="Logo et image de fond pour Groupomania" class="image__img">
+            <img src="../assets/fond_signup_login.jpg" alt="image de fond pour Groupomania" class="image__img">
         </div>
     </main>
 </template>

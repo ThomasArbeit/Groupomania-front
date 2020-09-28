@@ -18,7 +18,7 @@
                 <div class="modale__formbox">
                     <label for="email" class="modale__label">Votre E-mail</label>
                     <input type="email" id="email" class="modale__input" placeholder="Changez votre E-mail" v-model="email">
-                    <span class="form__error" v-if="((!$v.email.required || !$v.email.email) && $v.email.$dirty) && submited">Veuillez rentrer un email valide</span>
+                    <span class="form__error" v-if="((!$v.email.required || !$v.email.email) && $v.email.$dirty) && submited">Veuillez rentrer un email </span>
                     <span class="form__error" v-if="responseEmailError">Cette adresse mail n'est pas disponible</span>
                 </div>
                 <button type="submit" class="modale__submit">VALIDER</button>

@@ -46,7 +46,7 @@
         </div>
 
         <div class="image">
-            <img src="../assets/Groupomania-logo.jpg" alt="Logo et image de fond pour Groupomania" class="image__img">
+            <img src="../assets/fond_signup_login.jpg" alt="Logo et image de fond pour Groupomania" class="image__img">
         </div>
     </main>
 </template>
@@ -157,10 +157,15 @@ export default {
         justify-content: center;
         align-items: center;
 
+
         &__form{
             height: 800px;
             width: 480px;
             align-items: baseline;
+
+            @media (max-width: 550px) {
+                width: 90vw;
+            }
         }
         &__title{
             font-size: 26px;
@@ -192,6 +197,8 @@ export default {
             position: relative;
             display: flex;
             justify-content: space-between;
+
+            
         }
         &__button{
             width: 45%;
@@ -203,6 +210,10 @@ export default {
             margin: 54px 0 16px; 
             cursor: pointer;
             font-size: 20px;
+
+            @media (max-width: 400px) {
+                font-size: 15px;
+            }
 
             &--inactive{
                 display: flex;
@@ -236,6 +247,10 @@ export default {
         justify-content: center;
         align-items: center;
         overflow: hidden;
+
+        @media (max-width: 1235px) {
+            display: none;
+        }
 
         &__img{
             height: auto;
