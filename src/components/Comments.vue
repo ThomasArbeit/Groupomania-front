@@ -4,13 +4,13 @@
         <div class="comments" id="comment" v-for='comment in comments' :key='comment.commentId'>
             <div class="comments__title">
                 <p class="comments__user">{{ comment.User.firstName }}  {{ comment.User.lastName }}</p>
-                <div class="comments__optionToggle" v-on:click="optionToggle(comment)" v-if="comment.commentor_Id == userId || userRole == 1"><font-awesome-icon icon="ellipsis-h" /></div>
+                <div class="comments__optionToggle" title="toggle-options" v-on:click="optionToggle(comment)" v-if="comment.commentor_Id == userId || userRole == 1"><font-awesome-icon icon="ellipsis-h" /></div>
                 <div class="comments__option" v-if="comment.option">
-                    <div class="comments__button comments__button--delete" v-if="comment.commentor_Id == userId || userRole == 1" v-on:click="deleteComment(comment.commentId)">
+                    <div class="comments__button comments__button--delete" title="Supprimer le commentaire" v-if="comment.commentor_Id == userId || userRole == 1" v-on:click="deleteComment(comment.commentId)">
                         Supprimer 
                         <font-awesome-icon icon="trash" />
                     </div>
-                    <div class="comments__button comments__button--modify" v-if="(comment.commentor_Id == userId || userRole == 1) && comment.modify == false" v-on:click="modifyPrompt(comment), optionToggle(comment)" >
+                    <div class="comments__button comments__button--modify" title="Modifier le commentaire" v-if="(comment.commentor_Id == userId || userRole == 1) && comment.modify == false" v-on:click="modifyPrompt(comment), optionToggle(comment)" >
                         Modifier
                         <font-awesome-icon icon="pen" />
                     </div>
@@ -19,7 +19,7 @@
             </div>
             <p class="comments__content" v-if="comment.modify == false">{{ comment.content }} </p>
             <form class="comments__form" method="POST" v-on:submit.prevent="modifyComm(comment.commentId, comment)" v-if="comment.modify == true">
-                <div class="modale__button" v-on:click="modifyPrompt(comment)">X</div>
+                <div class="modale__button" role="button" title="Annuler" v-on:click="modifyPrompt(comment)">X</div>
                 <input type="text" class="comment__input"  v-model="comment.content">
             </form>
             

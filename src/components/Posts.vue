@@ -14,7 +14,7 @@
             </div>
             <router-link :to="{name:'Post', params: {id : post.postId}}" class="post__link">
                 <div class="post__image">
-                    <img :src="post.imageUrl" alt="" class="post__img">
+                    <img :src="post.imageUrl" :alt="post.content" class="post__img">
                 </div>
             </router-link>
             <Likes v-bind:post="post"/>
@@ -36,7 +36,6 @@ export default {
             posts: "",
             userRole: "",
             userId: sessionStorage.getItem('userId'),
-            liked: '',
             token: sessionStorage.getItem('usertoken')
         }
     },

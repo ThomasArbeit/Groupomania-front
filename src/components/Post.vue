@@ -5,7 +5,6 @@
             <div class="post__title">
                 <p class="post__user">{{ post.User.firstName }}  {{ post.User.lastName }}</p>
                 <p class="post__desc">{{ post.content }}</p>
-                <p class="post__date">{{ post.createdAt }}</p>
                 <button 
                 v-if="post.creator_Id == userId || userRole == 1"
                 v-on:click='toggleModale'

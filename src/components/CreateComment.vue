@@ -5,11 +5,11 @@
         </h2>
         <form method="POST" class="comment__form" v-on:submit.prevent='submit()'>
             <div class="comment__formbox" >
-                <label for="comment" class="comment__label">Votre commentaire :</label>
-                <input type="text" id="comment" class="comment__input" v-model="comment" placeholder="Entrez votre commentaire">
+                <label for="comment-create" class="comment__label">Votre commentaire :</label>
+                <input type="text" id="comment-create" class="comment__input" v-model="comment" placeholder="Entrez votre commentaire">
                 <span class="form__error" v-if="(!$v.comment.required && $v.comment.$dirty) && submited" >Veuillez entrer un commentaire avant de valider</span>
             </div>
-            <button class="comment__button" type="submit">VALIDER</button>
+            <button class="comment__button" title='Valider' type="submit">VALIDER</button>
         </form>
 
     </div>

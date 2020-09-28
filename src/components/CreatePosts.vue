@@ -8,9 +8,9 @@
             </div>
 
             <div class="createPost__formbox--small">
-                <label for="file" class="createPost__formlabel createPost__formlabel--file"><font-awesome-icon icon="images" /></label>
+                <label for="file" title="Choisir une image" role="button" class="createPost__formlabel createPost__formlabel--file"><font-awesome-icon icon="images" /></label>
                 <input type="file" name="image" id="file" @change="onFileSelected" hidden>
-                <button type="submit" class="createPost__formsubmit"><font-awesome-icon icon="paper-plane" /></button>
+                <button type="submit" title="Valider" class="createPost__formsubmit"><font-awesome-icon icon="paper-plane" /></button>
             </div>  
 
         </form>

@@ -1,7 +1,7 @@
 <template>
     <div class="post__likebox">
         <p>{{ numberOfLikes }} Likes</p>
-        <p class="post__like" :id="post.postId" v-on:click="Likes()"><font-awesome-icon icon="heart" /></p>
+        <p class="post__like" title="like" role="button" :id="post.postId" v-on:click="Likes()"><font-awesome-icon icon="heart" /></p>
     </div>
         
 </template>
