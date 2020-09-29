@@ -78,3 +78,104 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" >
+.modale{
+        position: fixed;
+        top:0;
+        right:0;
+        bottom:0;
+        left:0;
+        z-index: 2;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &__overlay{
+            position: fixed;
+            top:0;
+            right:0;
+            bottom:0;
+            left:0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        &__card{
+            position: relative;
+            z-index: 2;
+            background-color: rgb(247, 247, 247);
+            width: 100%;
+            max-width: 800px;
+            border-radius: 10px;
+            padding: 40px;
+        }
+        &__title{
+            margin-bottom: 20px;
+        }
+        &__button{
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(184, 21, 21);
+            height: 25px;
+            width: 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+            &:hover{
+                background-color: rgb(148, 0, 0);
+            }
+        }
+        &__form{
+            position: relative;
+        }
+        &__formbox{
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 40px;
+            position: relative;
+        }
+        &__label{
+            display: block;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        &__input{
+            height: 50px;
+            padding-left: 20px; 
+            border-radius: 10px;
+            border: 1px solid black;
+            font-size: 16px;
+        }
+        &__submit{
+            padding: 10px 30px;
+            border-radius: 10px;
+            border: none;
+            background-color: #004367;
+            color: white;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        &__success{
+            background-color: rgba(10, 173, 4, 0.2);
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: 1px solid rgba(0, 0, 0, 0.219);
+            border-radius: 10px;
+            color:rgb(32, 104, 29);
+        }
+        &__error{
+            background-color: rgba(173, 4, 4, 0.2);
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: 1px solid rgba(0, 0, 0, 0.219);
+            border-radius: 10px;
+            color:rgb(104, 29, 29);
+        }
+    }
+</style>
