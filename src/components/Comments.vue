@@ -1,5 +1,6 @@
 <template>
     <div class="commentaires">
+        <CreateComment v-bind:comments="comments" v-bind:printComments="printComments"/>
         <h2 class="commentaires__title"> Les Commentaires </h2>
         <div class="comments" id="comment" v-for='comment in comments' :key='comment.commentId'>
             <div class="comments__title">
@@ -28,10 +29,14 @@
 </template>
 
 <script>
+import CreateComment from './CreateComment'
 import axios from 'axios'
 import VueJwtDecode from 'vue-jwt-decode'
 export default {
     name: 'Comments',
+    components:{
+        CreateComment
+    },
     data(){
         return {
             comments: "",
@@ -65,24 +70,7 @@ export default {
             })
             .catch(error => console.log(error));
         },
-        deleteComment(id){
-            const commentId = id;
-            const token = sessionStorage.getItem('usertoken');
-            const header = {
-                headers :{
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            }
-            axios.delete('http://localhost:3000/api/comments/' + commentId, header )
-            .then(res => {
-                    console.log(res);
-                    window.location.reload()
-                })
-            .catch(error => console.log(error));
-        }
-    },
-    beforeMount() {
+        printComments(){
             const hashUrl = window.location.hash;
             const post_Id = hashUrl.split('/')[2];
             const token = sessionStorage.getItem('usertoken');
@@ -103,7 +91,25 @@ export default {
                 this.comments = data;
             })
             .catch(error => console.log({error}));
-            
+        },
+        deleteComment(id){
+            const commentId = id;
+            const token = sessionStorage.getItem('usertoken');
+            const header = {
+                headers :{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            axios.delete('http://localhost:3000/api/comments/' + commentId, header )
+            .then(() => {
+                    this.printComments();
+                })
+            .catch(error => console.log(error));
+        }
+    },
+    beforeMount() {
+            this.printComments()
         }
     }
 

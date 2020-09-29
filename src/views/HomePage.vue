@@ -6,23 +6,18 @@
         <div class="contentBar">
             <Posts/>
         </div>
-        <div class="addBar">
-            <CreatePosts/>
-        </div>
     </div>
 </template>
 
 <script>
 import NavBar from '../components/NavBar.vue'
 import Posts from '../components/Posts.vue'
-import CreatePosts from '../components/CreatePosts.vue'
 
 export default {
     name: 'Home',
     components:{
         NavBar,
         Posts,
-        CreatePosts,
     },
 }
 </script>

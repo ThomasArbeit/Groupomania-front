@@ -29,7 +29,7 @@
 import axios from 'axios'
 export default {
     name: 'ModalePost',
-    props: ['revele', 'toggleModale', 'post'],
+    props: ['revele', 'toggleModale', 'post', 'printPost', 'isLiked'],
     data(){
         return{
             userId: sessionStorage.getItem("userId"),
@@ -68,7 +68,9 @@ export default {
                     this.success = true;
                     this.message = "Votre Post a bien été modifié";
                     document.getElementById('response').classList = 'modale__success'
-                    window.location.reload();
+                    this.printPost();
+                    this.toggleModale();
+                    this.success = !this.success;
                 })
                 .catch(error => console.log(error));
             }

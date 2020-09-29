@@ -18,16 +18,14 @@
             </div>
            
             <Likes v-bind:post="post"/>
-            <CreateComment/>
             <Comments/>
-            <ModalePost v-bind:revele="revele" v-bind:post="post" v-bind:toggleModale="toggleModale"/>
+            <ModalePost v-bind:revele="revele" v-bind:post="post" v-bind:toggleModale="toggleModale" v-bind:printPost="printPost"/>
         </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
-import CreateComment from './CreateComment'
 import Comments from './Comments'
 import Likes from './Likes'
 import ModalePost from './ModalePost'
@@ -35,7 +33,6 @@ import VueJwtDecode from 'vue-jwt-decode'
 export default {
     name: 'Post',
     components:{
-        CreateComment,
         Comments,
         Likes,
         ModalePost,
@@ -52,9 +49,8 @@ export default {
     methods: {
         toggleModale(){
             this.revele = !this.revele;
-        }
-    },
-    beforeMount() {
+        },
+        printPost(){
             const hashUrl = window.location.hash;
             const post_Id = hashUrl.split('/')[2];
             const token = sessionStorage.getItem('usertoken');
@@ -68,10 +64,12 @@ export default {
             .then(res => {
                 const data = res.data;
                 this.post = data;
-
             })
             .catch(error => console.log({error}));
-            
+        },
+    },
+    beforeMount() {
+        this.printPost()
         }
     }
 

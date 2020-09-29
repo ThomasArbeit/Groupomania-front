@@ -25,6 +25,7 @@ import axios from 'axios'
 import { required } from 'vuelidate/lib/validators'
 export default {
     name: 'CreatePosts',
+    props:['posts', 'userRole', 'printNewPosts'],
     data(){
         return{
             content: '',
@@ -62,9 +63,11 @@ export default {
                         'Authorization': `Bearer ${token}`
                     }
                 })
-                .then(res => {
-                    console.log(res);
-                    this.$router.go();
+                .then(() => {
+                    this.printNewPosts();
+                    this.submited = !this.submited;
+                    this.content = "";
+                    this.selectedFile = null;
                 })
                 .catch(error => console.log(error));
             }

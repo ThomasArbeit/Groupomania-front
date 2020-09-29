@@ -20,6 +20,7 @@ import axios from 'axios'
 import { required } from 'vuelidate/lib/validators'
 export default {
     name: 'CreateComment',
+    props: ['comments', 'printComments'],
     data(){
         return{
             comment: "",
@@ -53,7 +54,9 @@ export default {
                 axios.post('http://localhost:3000/api/comments/create/' + post_Id, body, header )
                 .then(res => {
                     console.log(res);
-                    window.location.reload();
+                    this.printComments();
+                    this.submited = !this.submited;
+                    this.comment = "";
                 })
                 .catch(error => console.log({error}));
             }

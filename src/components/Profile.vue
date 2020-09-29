@@ -8,6 +8,7 @@
             <p class="profile__email"><strong>Votre e-mail :</strong> {{ user.email }}</p>
             <p class="profile__createdAt"><strong>Date de création :</strong> {{ user.createdAt }}</p>
         </div>
+        <button v-on:click='deleteAccount'  class="home__button home__button--delete">Supprimer mon compte</button>
     </div>
 </template>
 
@@ -20,6 +21,24 @@ export default {
     data(){
         return {
             profile:""
+        }
+    },
+    methods:{
+        deleteAccount(){
+            axios.delete('http://localhost:3000/api/users/' + this.userId, {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${this.token}`
+                }
+            })
+            .then(() => {
+                console.log("Profil supprimé");
+                sessionStorage.clear();
+                this.$router.push('/Login');
+            })
+        },
+        toggleModale(){
+            this.revele = !this.revele;
         }
     },
     mounted(){

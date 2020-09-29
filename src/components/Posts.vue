@@ -1,5 +1,6 @@
 <template>
     <div class="posts">
+        <CreatePosts v-bind:posts="posts"  v-bind:userRole="userRole" v-bind:printNewPosts="printNewPosts"/>
         <h1 class="posts__title"> Les Posts </h1>
         <div class="post" id="post" v-for="post in posts" :key="post.postId">
             
@@ -24,10 +25,12 @@
 <script>
 import axios from 'axios'
 import VueJwtDecode from 'vue-jwt-decode'
+import CreatePosts from './CreatePosts'
 import Likes from './Likes'
 export default {
     name: 'Posts',
     components: {
+        CreatePosts,
         Likes
     },
     data(){
@@ -50,17 +53,12 @@ export default {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            .then(res => {
-                console.log(res);
-                window.location.reload();
-                })
+            .then(() => {
+                this.printNewPosts();
+            })
             .catch(error => console.log(error));
-        }
-    },
-    beforeMount() {
-            const decodedToken = VueJwtDecode.decode(sessionStorage.getItem('usertoken'));
-            const UserRole = decodedToken.role;
-            this.userRole = UserRole;
+        },
+        printNewPosts(){
             const token = sessionStorage.getItem('usertoken');
             const header = {
                 headers: {
@@ -76,7 +74,14 @@ export default {
             })
             .catch(error => console.log({error}));
         }
-    }
+    },
+    beforeMount() {
+        const decodedToken = VueJwtDecode.decode(sessionStorage.getItem('usertoken'));
+        const UserRole = decodedToken.role;
+        this.userRole = UserRole;
+        this.printNewPosts();
+    },
+}
 
 </script>
 

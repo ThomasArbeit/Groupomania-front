@@ -43,6 +43,9 @@ export default {
         })
         .catch(error => console.log(error));
     },
+    updated(){
+        this.verificationOnUpdate();
+    },
     methods:{
         Likes(){
             const post_Id = this.post.postId
@@ -86,6 +89,13 @@ export default {
                 this.numberOfLikes = this.numberOfLikes - 1;
             }
             this.post.isLiked = !this.post.isLiked
+        },
+        verificationOnUpdate(){
+            if (document.getElementById(`${this.post.postId}`).classList == "post__like post__liked"){
+            this.post.isLiked = true;
+        } else {
+            this.post.isLiked = false;
+        }
         }
     }
 }
