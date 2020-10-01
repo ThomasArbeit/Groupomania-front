@@ -34,7 +34,7 @@ export default {
             .then(() => {
                 console.log("Profil supprimé");
                 sessionStorage.clear();
-                // A ajouter lors de la soutenance, vu lors de test => this.$store.commit("setAuthentication", false);
+                this.$store.commit("setAuthentication", false);
                 this.$router.push('/Login');
             })
         },
