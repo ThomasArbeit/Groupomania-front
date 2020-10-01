@@ -22,6 +22,7 @@ export default {
         Logout(){
             console.log("Sessionstorage Cleared");
             sessionStorage.clear();
+            // Ajouter la modification du state de authenticated pendant la soutenance, erreur vue lors de tests => this.$store.commit("setAuthentication", false);
             this.$router.push('/Login');
         }
     }
